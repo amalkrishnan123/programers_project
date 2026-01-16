@@ -1,0 +1,13 @@
+{% extends  "base.html" %}
+{% block content %}
+<div class='card mt-4 mx-auto p-3 py-2' style='width: 18rem;'>
+<form method='post'>
+    {% csrf_token %}
+    <label for='username'>Username</label>
+    <input type='text' name='username'/ ><br>
+    <label for='password'>Password</label>
+    <input type='password' name='password' autocomplete='off'/><br>
+    <button type='submit' class='mt-2 btn btn-success'>Login</button>
+</form>
+</div>
+{% endblock content %}

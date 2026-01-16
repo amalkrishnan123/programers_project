@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1 class='text-center'>PRODUCT</h1>
+<form method='post' enctype="multipart/form-data" class='mx-auto mt-4' style='width:30rem'>
+    {% csrf_token %}
+    {{ product_form|crispy }}
+    <button type='submit' name='product_submit'>create</button>
+</form>
+
+<hr class="my-4">
+<h1 class='text-center'>CATEGORY</h1>
+<hr>
+<form method='post' class='mx-auto mt-4' style='width:30rem'>
+    {% csrf_token %}
+    {{ category_form|crispy }}
+    <button type='submit' name='category_submit'>create</button>
+</form>
+{% endblock content %}

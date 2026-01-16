@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class='text-center'>PRODUCTS</h1> 
+<form method='get'>
+<select name='sort'>
+    <option value=''>Sort by date</option>
+    <option value="latest"
+            {% if request.GET.sort == "latest" %}selected{% endif %}>Latest - Oldest
+    </option>
+    <option value="oldest"
+            {% if request.GET.sort == "oldest" %}selected{% endif %}>Oldest -Latest 
+    </option>
+</select>
+<button type='submit'>sort</button>
+</form>
+<table class='table table-bordered mt-4'>
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Mobile</td>
+            <td>Address</td>
+            <td>Product</td>
+            <td>Quantity</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i  in enq %}
+        <tr>
+             <td>{{i.name}}</td>
+             <td>{{i.mobile}}</td>
+             <td>{{i.address}}</td>
+            <td>{{i.enqproduct.name}}</td>
+            <td>{{i.quantity}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

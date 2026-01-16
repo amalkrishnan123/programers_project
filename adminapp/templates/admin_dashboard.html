@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<div class='mt-4 '>
+<a href="{% url 'add_prodct' %}" class='btn btn-primary me-2'>Add Items</a>
+<a href="{% url "password_change" %}" class='btn btn-primary me-2'>change password</a>
+<a href="{% url 'logout_admin' %}" class='btn btn-danger me-2'>logout</a>
+</div>
+<h1 class='text-center'>PRODUCTS</h1>             
+<table class='table table-bordered mt-4'>
+    <thead>
+        <tr>
+            <td>Product</td>
+            <td>Product Action</td>
+            <td>Amount</td>
+            <td>Category</td>
+            <td>Enquiry</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i  in product %}
+        <tr>
+             <td>{{i.name}}</td>
+             <td><a href="{% url "edit_pro" i.id %}">edit</a>  |  <a href="{% url "delete" i.id %}">delete</a></td>
+            <td>{{i.amount}}</td>
+            <td>{{i.category.name}}</td>
+            <td><a href="{% url "admin_enq" %}" class="btn btn-sm btn-primary">
+                    Enquiry
+                </a> </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table><hr>
+<h1 class='text-center'>CATEGORY</h1> 
+<table class='table table-bordered mt-4'>
+    <thead>
+        <tr>
+            <td>Category</td>
+            <td>Category Action</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i  in category %}
+        <tr>
+            <td>{{i.name}}</td>
+            <td><a href="{% url "edit_cat" i.id %}">edit</a>  |  <a href="{% url "delete_cat" i.id %}">delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+
+{% endblock content %}
