@@ -3,6 +3,12 @@ from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
 from .forms import ProductForm,CategoryForm,EnquiryForm
 from .models import Category,Product,Enquiry
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from .models import Enquiry
 
 # Create your views here.
 def admin_login(request):
@@ -95,7 +101,7 @@ def admin_enquiry(request,id):
         enq = enq.order_by('-created_at')
     elif sort == 'oldest':
         enq = enq.order_by('created_at')
-    return render(request,'admin_enquiry.html',{'enq':enq})
+    return render(request,'admin_enquiry.html',{'enq':enq,'product_id':id})
 
 def admin_password_change(request):
      if request.method == 'POST':
@@ -115,3 +121,43 @@ def admin_password_change(request):
 def logout_admin(request):
     logout(request)
     return redirect('admin_login_page')
+
+def enquiry_pdf_report(request,id):
+    product=get_object_or_404(Product,id=id)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="enquiry_report.pdf"'
+    pdf = SimpleDocTemplate(response, pagesize=A4)
+    elements = []
+    styles = getSampleStyleSheet()
+    title = Paragraph("<b>Enquiry Report</b>", styles['Title'])
+    elements.append(title)
+    data = [
+        [
+            "Name", "Mobile","Address","Product",
+            "Quantity", "Date"
+        ]
+    ]
+    enquiries = Enquiry.objects.filter(product=product)
+    print(enquiries)
+    for enq in enquiries:
+        data.append([
+            enq.name,
+            enq.mobile,
+            enq.address,
+            enq.product.name,
+            enq.quantity,
+            enq.created_at.strftime("%d-%m-%Y"),
+        ])
+    table = Table(data, repeatRows=1)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+    ]))
+    elements.append(table)
+    pdf.build(elements)
+    return response

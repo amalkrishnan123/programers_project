@@ -13,6 +13,7 @@ urlpatterns = [
     path('category_edit/<int:id>',views.edit_category,name='edit_cat'),
     path('category_delete/<int:id>',views.delete_category,name='delete_cat'),
     path('password_change/',views.admin_password_change,name='password_change'),
-    path('logout_ad/',views.logout_admin,name='logout_admin')
+    path('logout_ad/',views.logout_admin,name='logout_admin'),
+    path('export_pdf/<int:id>',views.enquiry_pdf_report,name='pdf_name'),
 
 ]
