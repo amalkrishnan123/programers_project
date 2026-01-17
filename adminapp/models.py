@@ -23,5 +23,5 @@ class Enquiry(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     is_contact=models.BooleanField(default=False)
     remarks=models.CharField(max_length=100)
-    product=models.ForeignKey(Product,on_delete=models.CASCADE,name='enqproduct')
+    product=models.ForeignKey(Product,on_delete=models.CASCADE,related_name='enqproduct')
 

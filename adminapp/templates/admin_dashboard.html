@@ -23,7 +23,7 @@
              <td><a href="{% url "edit_pro" i.id %}">edit</a>  |  <a href="{% url "delete" i.id %}">delete</a></td>
             <td>{{i.amount}}</td>
             <td>{{i.category.name}}</td>
-            <td><a href="{% url "admin_enq" %}" class="btn btn-sm btn-primary">
+            <td><a href="{% url "admin_enq" i.id %}" class="btn btn-sm btn-primary">
                     Enquiry
                 </a> </td>
         </tr>

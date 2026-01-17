@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
 from .forms import ProductForm,CategoryForm,EnquiryForm
@@ -80,15 +80,16 @@ def user_enquiry(request,id):
         form=EnquiryForm(request.POST)
         if form.is_valid():
             enquiry = form.save(commit=False)
-            enquiry.enqproduct=product
+            enquiry.product=product
             enquiry.save()
             return redirect('user_section')
     else:
         form=EnquiryForm()
     return render(request,'user_enquiry.html',{'form':form})
 
-def admin_enquiry(request):
-    enq=Enquiry.objects.all()
+def admin_enquiry(request,id):
+    product=get_object_or_404(Product,id=id)
+    enq=Enquiry.objects.filter(product=product)
     sort = request.GET.get('sort')
     if sort == 'latest':
         enq = enq.order_by('-created_at')
